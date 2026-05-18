@@ -15,6 +15,12 @@
 &zip_temp_layer { excluded-positions = <7 18 19 20>; };
 
 / {
+    zip_temp_layer: zip_temp_layer {
+        compatible = "zmk,input-processor-temp-layer";
+        #input-processor-cells = <2>;
+        require-prior-idle-ms = <0>;
+    };
+
     combos {
         compatible = "zmk,combos";
 
