@@ -8,17 +8,11 @@
     quick-tap-ms = <0>;
 };
 
-&trackball {
-    scroll-layers = <5>;
-};
+&trackball { scroll-layers = <5>; };
 
-&trackball_listener {
-    input-processors = <&zip_temp_layer 4 10000>;
-};
+&trackball_listener { input-processors = <&zip_temp_layer 4 10000>; };
 
-&zip_temp_layer {
-    excluded-positions = <7 18 19 20>;
-};
+&zip_temp_layer { excluded-positions = <7 18 19 20>; };
 
 / {
     combos {
@@ -115,10 +109,10 @@
 
         MOUSE {
             bindings = <
-&trans  &trans  &trans  &trans  &trans                      &trans  &trans    &trans    &trans    &trans
-&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &trans
-&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans    &trans    &trans    &trans
-&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans                                &trans
+&trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans    &trans    &trans
+&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans    &trans    &trans
+&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &mkp MB1  &mkp MB2  &mo 5
+&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans                              &trans
             >;
         };
 
