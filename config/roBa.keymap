@@ -98,9 +98,9 @@
 
         NUM {
             bindings = <
-&kp ESC         &kp UP_ARROW    &trans           &kp SCROLLLOCK  &kp C_PAUSE                            &kp CARET         &kp AMPERSAND      &kp TILDE       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS
+&kp ESC         &kp UP_ARROW    &kp INSERT       &kp SCROLLLOCK  &kp C_PAUSE                            &kp CARET         &kp AMPERSAND      &kp TILDE       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS
 &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp HOME        &kp PG_UP      &trans      &trans      &kp EXCLAMATION   &kp AT_SIGN        &kp HASH        &kp DOLLAR            &kp PERCENT
-&kp INSERT      &trans          &trans           &kp END         &kp PAGE_DOWN  &trans      &trans      &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp LEFT_BRACE  &kp RIGHT_BRACE       &kp BACKSLASH
+&kp TAB         &trans          &trans           &kp END         &kp PAGE_DOWN  &trans      &trans      &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp LEFT_BRACE  &kp RIGHT_BRACE       &kp BACKSLASH
 &trans          &trans          &trans           &trans          &trans         &trans      &kp DELETE  &trans                                                                     &kp PIPE
             >;
         };
