@@ -46,6 +46,6 @@
 // --- Japanese-specific Input Keys ---
 #define JP_MHEN INT_MUHENKAN               // 無変換 (Muhenkan)
 #define JP_HENK INT_HENKAN                 // 変換 (Henkan)
-#define JP_KANA INT_KATAKANAHIRAGANAKANJI // ひらがな・カタカナ・ローマ字
+#define JP_KANA INT_KANA                   // ひらがな・カタカナ・ローマ字
 
 #endif // KEYS_JA_H
