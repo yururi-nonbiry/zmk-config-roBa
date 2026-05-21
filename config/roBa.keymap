@@ -15,6 +15,7 @@
 &zip_temp_layer { excluded-positions = <7 18 19 20>; };
 
 / {
+    label_references { zip_temp_layer = &zip_temp_layer; };
     zip_temp_layer: zip_temp_layer {
         compatible = "zmk,input-processor-temp-layer";
         #input-processor-cells = <2>;
