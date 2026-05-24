@@ -1,6 +1,7 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 80
 #include <dt-bindings/zmk/pointing.h>
 
 &mt {
@@ -79,10 +80,11 @@
             tapping-term-ms = <200>;
         };
 
-        scroll_encoder: scroll_encoder {
+        encoder_msc_down_up: encoder_msc_down_up {
             compatible = "zmk,behavior-sensor-rotate";
+            label = "ENCODER_MSC_DOWN_UP";
             #sensor-binding-cells = <0>;
-            bindings = <&msc SCRL_UP>, <&msc SCRL_DOWN>;
+            bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
             tap-ms = <20>;
         };
     };
@@ -107,7 +109,7 @@
         &kp LCTRL  &kp LEFT_SHIFT  &kp LEFT_ALT  &kp LEFT_GUI  &lt 2 SPACE       &kp TAB                  &kp BACKSPACE  &lt 1 ENTER                              &kp LS(INTERNATIONAL_1)
             >;
 
-            sensor-bindings = <&scroll_encoder>;
+            sensor-bindings = <&encoder_msc_down_up>;
         };
 
         FUNCTION {
