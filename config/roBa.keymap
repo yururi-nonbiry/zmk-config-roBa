@@ -106,7 +106,7 @@
         &kp LCTRL  &kp LEFT_SHIFT  &kp LEFT_ALT  &kp LEFT_GUI  &lt 2 SPACE       &kp TAB                  &kp BACKSPACE  &lt 1 ENTER                              &kp LS(INTERNATIONAL_1)
             >;
 
-            sensor-bindings = <&scroll_encoder>;
+            sensor-bindings = <&inc_dec_kp UP DOWN>;
         };
 
         FUNCTION {
