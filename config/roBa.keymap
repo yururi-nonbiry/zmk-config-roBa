@@ -125,7 +125,7 @@
             bindings = <
         &kp ESC    &kp UP_ARROW       &kp INSERT  &kp SCROLLLOCK    &kp C_PAUSE                                                &kp LS(NUMBER_1)  &kp LS(NUMBER_2)  &kp LS(RIGHT_BRACKET)  &kp LS(BACKSLASH)         &kp LS(NUMBER_3)
  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW        &kp HOME      &kp PG_UP  &trans                  &kp LS(LEFT_BRACKET)  &kp LS(NUMBER_6)  &kp LS(NUMBER_7)      &kp RIGHT_BRACKET      &kp BACKSLASH  &kp LS(INTERNATIONAL_3)
-         &trans          &trans           &trans         &kp END  &kp PAGE_DOWN  &trans                      &kp LEFT_BRACKET     &kp SEMICOLON  &kp SINGLE_QUOTE       &kp LS(NUMBER_8)   &kp LS(NUMBER_9)      &kp INTERNATIONAL_3
+      &kp GRAVE          &trans           &trans         &kp END  &kp PAGE_DOWN  &trans                      &kp LEFT_BRACKET     &kp SEMICOLON  &kp SINGLE_QUOTE       &kp LS(NUMBER_8)   &kp LS(NUMBER_9)      &kp INTERNATIONAL_3
       &kp GRAVE          &trans           &trans          &trans         &trans  &trans                            &kp DELETE            &trans                                                                        &kp LS(EQUAL)                                                                  &kp PIPE
             >;
         };
