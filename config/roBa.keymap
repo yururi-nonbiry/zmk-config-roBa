@@ -27,7 +27,7 @@
 
 &trackball_listener { input-processors = <&zip_temp_layer 4 10000>; };
 
-&zip_temp_layer { excluded-positions = <7 18 19 20>; };
+&zip_temp_layer { excluded-positions = <31 32 33>; };
 
 /* ========================================================================== */
 /* 3. 残りの combos などの定義を続ける（ここもルートノードの中身です）        */
