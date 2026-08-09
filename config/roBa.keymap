@@ -117,7 +117,7 @@
  &kp F1   &kp F2   &kp F3   &kp F4  &trans                                            &kp NUMBER_7  &kp NUMBER_8  &kp NUMBER_9  &kp LS(SINGLE_QUOTE)      &kp SLASH
  &kp F5   &kp F6   &kp F7   &kp F8  &trans  &trans                  &kp LS(NUMBER_4)  &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6     &kp LS(SEMICOLON)      &kp MINUS
  &kp F9  &kp F10  &kp F11  &kp F12  &trans  &trans                  &kp LS(NUMBER_5)  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3          &kp NUMBER_0  &kp LS(MINUS)
- &trans   &trans   &trans   &trans  &trans  &trans                            &trans        &trans                                                       &kp PERIOD
+ &trans   &trans   &trans   &kp INT_MUHENKAN  &trans  &kp INT_HENKAN                            &trans        &trans                                                       &kp PERIOD
             >;
         };
 
