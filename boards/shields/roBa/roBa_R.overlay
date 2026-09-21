@@ -62,6 +62,12 @@
         reset-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
         rdy-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
 
+        /* Sensor's raw axes are rotated 90 degrees from the module's mounted
+         * orientation (physically rotating the pad 90 deg clockwise fixes it) -
+         * compensate in software instead: swap x/y, then invert the new y. */
+        switch-xy;
+        flip-y;
+
         one-finger-tap;
         press-and-hold;
         two-finger-tap;
