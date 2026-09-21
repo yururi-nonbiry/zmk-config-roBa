@@ -123,3 +123,13 @@
         status = "disabled";
     };
 };
+
+&i2c0 {
+    status = "disabled";
+
+    trackpad: trackpad@74 {
+        compatible = "azoteq,iqs5xx";
+        status = "disabled";
+        reg = <0x74>;
+    };
+};
