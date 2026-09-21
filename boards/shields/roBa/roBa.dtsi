@@ -123,12 +123,3 @@
         status = "disabled";
     };
 };
-
-&spi0 {
-    status = "disabled";
-
-    trackpad: trackpad@0 {
-        status = "disabled";
-        reg = <0>;
-    };
-};

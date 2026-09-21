@@ -1,4 +1,5 @@
 #include "roBa.dtsi"
+#include <zephyr/dt-bindings/i2c/i2c.h>
 
 &default_transform {
     col-offset = <6>;
@@ -19,25 +20,21 @@
     device = <&trackpad>;
 };
 
-/* FIXME: MOSI and MISO both being P0.04 was a trackball-only trick: the
- * PMW3610 driver bit-bangs a single shared data line and never uses real
- * SPI full-duplex. The Cirque Pinnacle driver talks standard 4-wire SPI
- * (separate MOSI/MISO), so MISO must move to its own free GPIO before this
- * will work - update once the actual FFC wiring/pin choice is known. */
+/* i2c0 and spi0 are the same nRF52840 peripheral instance (0x40003000) -
+ * only one may be enabled at a time. The trackball's SPI0 pins (P0.05,
+ * P0.04) are reused here as I2C0 SCL/SDA since SPI0 is no longer used. */
 &pinctrl {
-    spi0_default: spi0_default {
+    i2c0_default: i2c0_default {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
-                <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                <NRF_PSEL(SPIM_MISO, 0, 4)>;
+            psels = <NRF_PSEL(TWIM_SCL, 0, 5)>,
+                <NRF_PSEL(TWIM_SDA, 0, 4)>;
         };
     };
 
-    spi0_sleep: spi0_sleep {
+    i2c0_sleep: i2c0_sleep {
         group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 5)>,
-                <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                <NRF_PSEL(SPIM_MISO, 0, 4)>;
+            psels = <NRF_PSEL(TWIM_SCL, 0, 5)>,
+                <NRF_PSEL(TWIM_SDA, 0, 4)>;
             low-power-enable;
         };
     };
@@ -45,24 +42,29 @@
 
 &xiao_serial { status = "disabled"; };
 
-&spi0 {
+&i2c0 {
     status = "okay";
-    compatible = "nordic,nrf-spim";
-    pinctrl-0 = <&spi0_default>;
-    pinctrl-1 = <&spi0_sleep>;
+    compatible = "nordic,nrf-twim";
+    pinctrl-0 = <&i2c0_default>;
+    pinctrl-1 = <&i2c0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+    clock-frequency = <I2C_BITRATE_FAST>;
 
-    /* TPS43 (Cirque Pinnacle 1CA027) trackpad, SPI mode.
-     * TODO: dr-gpios (data-ready) is a placeholder carried over from the
-     * trackball's irq pin (P0.02) - confirm against actual FFC wiring. */
-    trackpad: trackpad@0 {
+    /* TPS43 (Azoteq IQS572) trackpad, I2C mode - the module's only interface.
+     * reg 0x74 is the IQS5xx family's fixed 7-bit I2C address.
+     * TODO: reset-gpios/rdy-gpios reuse the trackball's old CS (P0.09) and
+     * IRQ (P0.02) pins as placeholders - confirm against the actual TPS43
+     * FFC wiring (J1: 1=RDY, 2=SDA, 3=GND, 4=VDDHI, 5=SCL, 6=NRST). */
+    trackpad: trackpad@74 {
         status = "okay";
-        compatible = "cirque,pinnacle";
-        reg = <0>;
-        spi-max-frequency = <1000000>;
-        dr-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
-        sensitivity = "2x";
-        no-taps;
+        compatible = "azoteq,iqs5xx";
+        reg = <0x74>;
+        reset-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+        rdy-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+
+        one-finger-tap;
+        press-and-hold;
+        two-finger-tap;
+        scroll;
     };
 };
