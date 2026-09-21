@@ -14,14 +14,16 @@
             ;
 };
 
-/ {
-    trackball_listener {
-        status = "okay";
-        compatible = "zmk,input-listener";
-        device = <&trackball>;
-    };
+&trackpad_listener {
+    status = "okay";
+    device = <&trackpad>;
 };
 
+/* FIXME: MOSI and MISO both being P0.04 was a trackball-only trick: the
+ * PMW3610 driver bit-bangs a single shared data line and never uses real
+ * SPI full-duplex. The Cirque Pinnacle driver talks standard 4-wire SPI
+ * (separate MOSI/MISO), so MISO must move to its own free GPIO before this
+ * will work - update once the actual FFC wiring/pin choice is known. */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -51,11 +53,16 @@
     pinctrl-names = "default", "sleep";
     cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
 
-    trackball: trackball@0 {
+    /* TPS43 (Cirque Pinnacle 1CA027) trackpad, SPI mode.
+     * TODO: dr-gpios (data-ready) is a placeholder carried over from the
+     * trackball's irq pin (P0.02) - confirm against actual FFC wiring. */
+    trackpad: trackpad@0 {
         status = "okay";
-        compatible = "pixart,pmw3610";
+        compatible = "cirque,pinnacle";
         reg = <0>;
-        spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        spi-max-frequency = <1000000>;
+        dr-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+        sensitivity = "2x";
+        no-taps;
     };
 };
