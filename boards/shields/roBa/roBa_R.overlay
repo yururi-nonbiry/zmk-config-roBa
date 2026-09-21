@@ -64,9 +64,8 @@
 
         /* Sensor's raw axes are rotated 90 degrees from the module's mounted
          * orientation (physically rotating the pad 90 deg clockwise fixes it) -
-         * compensate in software instead: swap x/y, then invert the new y. */
+         * compensate in software instead by swapping x/y. */
         switch-xy;
-        flip-y;
 
         one-finger-tap;
         press-and-hold;
