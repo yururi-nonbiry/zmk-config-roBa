@@ -13,14 +13,14 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: v0.3-branch
+      revision: main
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: kumamuk-git
       revision: main
     - name: zmk-rgbled-widget
       remote: caksoylar
-      revision: v0.3
+      revision: main
     - name: zmk-driver-azoteq-iqs5xx
       remote: AYM1607
       revision: main
