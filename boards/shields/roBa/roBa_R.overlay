@@ -18,7 +18,7 @@
 };
 
 /* zip_inertia auto-detects move (REL_X/REL_Y) vs scroll (REL_WHEEL/REL_HWHEEL)
- * events by code and applies its own move-*/scroll-* thresholds to each, so
+ * events by code and applies its own move- and scroll- thresholds to each, so
  * one shared instance below covers both the plain cursor movement + native
  * two-finger scroll gesture (base chain) and the SCROLL-layer-mapped scroll
  * (layer override) - referencing the same node in both places (as the module
