@@ -1,6 +1,7 @@
 #include "roBa.dtsi"
 #include <zephyr/dt-bindings/i2c/i2c.h>
 #include <input/processors.dtsi>
+#include <zmk-input-inertia/input/processor/input_inertia.dtsi>
 
 &default_transform {
     col-offset = <6>;
@@ -16,56 +17,21 @@
             ;
 };
 
-/ {
-    /* Adds momentum to SCROLL-layer scrolling: a fast flick keeps scrolling and
-     * decays after the finger lifts, but a slow drag stops immediately. Sits on
-     * the mapped single-finger movement below (raw sensor counts), not on the
-     * native two-finger gesture's pre-quantized wheel output, so the module's
-     * default `start`/`move` (tuned for raw counts) are left as-is.
-     * `stop = 1` follows the module's own guidance for a 1:1 scale/scale-div
-     * (no downstream scaler on this chain) - keeps the tail above ~5Hz so it
-     * doesn't end in visible discrete "clicks". `layer = 5` makes the module
-     * reset its internal state the instant the SCROLL layer turns off, so
-     * leaving mid-coast can't leave stale state that silently eats the start
-     * of the next session.
-     * axis = 0 treats scroll+hscroll as one vector, matching diagonal scrolling.
-     * This node must stay on the R (central) side only - the module fails the
-     * build if it's ever enabled on a peripheral. */
-    scroll_inertia: scroll_inertia {
-        compatible = "zmk,input-processor-scroll-inertia";
-        #input-processor-cells = <0>;
-        axis = <0>;
-        stop = <1>;
-        layer = <5>;
-    };
-
-    /* Same idea, but for the trackpad's native two-finger scroll gesture. That
-     * gesture's driver accumulates raw movement and divides by 32 before
-     * emitting a wheel event (drivers/input/iqs5xx.c), so each event's value is
-     * almost always 1 (occasionally 2-3 on a hard flick) - nowhere near the
-     * ~40+ raw-count magnitude the module's defaults assume. `start`/`move`/
-     * `min-events`/`release`/`gesture-timeout` are scaled down to match this
-     * much coarser, sparser event stream; everything else (decay, friction,
-     * scale) is left at defaults since those are ratio-based, not magnitude-
-     * based, and already come out fixed-point-smooth regardless of how coarse
-     * the raw input is. Untested on hardware - expect to retune. */
-    scroll_inertia_native: scroll_inertia_native {
-        compatible = "zmk,input-processor-scroll-inertia";
-        #input-processor-cells = <0>;
-        axis = <0>;
-        start = <2>;
-        move = <6>;
-        min-events = <5>;
-        release = <48>;
-        gesture-timeout = <150>;
-        stop = <1>;
-    };
-};
+/* zip_inertia auto-detects move (REL_X/REL_Y) vs scroll (REL_WHEEL/REL_HWHEEL)
+ * events by code and applies its own move-*/scroll-* thresholds to each, so
+ * one shared instance below covers both the plain cursor movement + native
+ * two-finger scroll gesture (base chain) and the SCROLL-layer-mapped scroll
+ * (layer override) - referencing the same node in both places (as the module
+ * requires) lets it also detect "moved the cursor while coasting a scroll"
+ * and stop cleanly. Left at module defaults for now (module's own defaults
+ * already assume small per-report deltas, unlike the previous module). This
+ * node must stay on the R (central) side only - the module's Kconfig refuses
+ * to build it on a peripheral. */
 
 &trackpad_listener {
     status = "okay";
     device = <&trackpad>;
-    input-processors = <&zip_temp_layer 4 10000 &scroll_inertia_native>;
+    input-processors = <&zip_temp_layer 4 10000 &zip_inertia>;
 
     /* While the SCROLL layer (5) is held, map the trackpad's single-finger raw
      * movement to wheel/hwheel events instead of cursor movement, then add
@@ -74,7 +40,7 @@
      * for - so it's rebuilt here as a layer-specific input-processor override. */
     scroller {
         layers = <5>;
-        input-processors = <&zip_xy_to_scroll_mapper &scroll_inertia>;
+        input-processors = <&zip_xy_to_scroll_mapper &zip_inertia>;
     };
 };
 
