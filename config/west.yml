@@ -2,17 +2,17 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: kumamuk-git
-      url-base: https://github.com/kumamuk-git
     - name: caksoylar
       url-base: https://github.com/caksoylar
+    - name: yururi-nonbiry
+      url-base: https://github.com/yururi-nonbiry
   projects:
     - name: zmk
       remote: zmkfirmware
       revision: main
       import: app/west.yml
     - name: zmk-pmw3610-driver
-      remote: kumamuk-git
+      remote: yururi-nonbiry
       revision: main
     - name: zmk-rgbled-widget
       remote: caksoylar
