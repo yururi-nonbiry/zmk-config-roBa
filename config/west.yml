@@ -6,8 +6,8 @@ manifest:
       url-base: https://github.com/kumamuk-git
     - name: caksoylar
       url-base: https://github.com/caksoylar
-    - name: AYM1607
-      url-base: https://github.com/AYM1607
+    - name: yururi-nonbiry
+      url-base: https://github.com/yururi-nonbiry
     - name: amgskobo
       url-base: https://github.com/amgskobo
   projects:
@@ -22,7 +22,7 @@ manifest:
       remote: caksoylar
       revision: main
     - name: zmk-driver-azoteq-iqs5xx
-      remote: AYM1607
+      remote: yururi-nonbiry
       revision: main
     - name: zmk-input-inertia
       remote: amgskobo
