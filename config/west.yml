@@ -8,6 +8,8 @@ manifest:
       url-base: https://github.com/caksoylar
     - name: AYM1607
       url-base: https://github.com/AYM1607
+    - name: mjmjm0101
+      url-base: https://github.com/mjmjm0101
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -21,6 +23,9 @@ manifest:
       revision: v0.3
     - name: zmk-driver-azoteq-iqs5xx
       remote: AYM1607
+      revision: main
+    - name: zmk-input-processor-scroll-inertia
+      remote: mjmjm0101
       revision: main
   self:
     path: config

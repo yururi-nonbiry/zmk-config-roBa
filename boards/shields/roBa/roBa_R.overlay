@@ -15,9 +15,24 @@
             ;
 };
 
+/ {
+    /* Adds momentum to the trackpad's native two-finger scroll gesture: a fast
+     * flick keeps scrolling and decays after the finger lifts, but a slow drag
+     * stops immediately (gated by `start`/`move`, both at their module defaults).
+     * axis = 0 treats scroll+hscroll as one vector, matching the two-finger
+     * gesture's diagonal scroll support. This node must stay on the R (central)
+     * side only - the module fails the build if it's ever enabled on a peripheral. */
+    scroll_inertia: scroll_inertia {
+        compatible = "zmk,input-processor-scroll-inertia";
+        #input-processor-cells = <0>;
+        axis = <0>;
+    };
+};
+
 &trackpad_listener {
     status = "okay";
     device = <&trackpad>;
+    input-processors = <&zip_temp_layer 4 10000 &scroll_inertia>;
 };
 
 /* i2c0 and spi0 are the same nRF52840 peripheral instance (0x40003000) -
