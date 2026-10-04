@@ -85,27 +85,7 @@
             label = "TO_LAYER_0";
         };
 
-        /* エンコーダーモード切替マクロ（Layer 6 を維持したまま 7/8 を重ねる） */
-        to_lh_zoom: to_lh_zoom {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&tog_off 7 &tog_off 8>;
-            label = "TO_LH_ZOOM";
-        };
 
-        to_lh_rotate: to_lh_rotate {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&tog_off 8 &tog_on 7>;
-            label = "TO_LH_ROTATE";
-        };
-
-        to_lh_brush: to_lh_brush {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&tog_off 7 &tog_on 8>;
-            label = "TO_LH_BRUSH";
-        };
     };
 
     behaviors {
@@ -202,11 +182,12 @@
          * - エンコーダー右回転: ズームイン LC(JP_PLUS)
          * - エンコーダー左回転: ズームアウト LC(JP_MINUS)
          * - エンコーダー押し込み(15): 全体表示リセット LC(NUMBER_0)
+         * - 切替キー: 位置2=&to 8 (ブラシ), 位置3=&to 7 (回転), 位置4=&to 6 (ズーム)
          * - 解除: 右手 P位置 (キー9番) の &to 0
          * ====================================================================== */
         LEFT_HAND {
             bindings = <
-&kp LC(Z)  &kp LC(Y)         &to_lh_brush      &to_lh_rotate  &to_lh_zoom                                                 &trans  &trans  &trans     &trans     &to 0
+&kp LC(Z)  &kp LC(Y)         &to 8             &to 7          &to 6                                                       &trans  &trans  &trans     &trans     &to 0
 &kp LCTRL  &mt LSHFT JP_HENK &kp LALT          &kp P          &kp E          &kp LC(NUMBER_0)         &trans  &trans  &trans     &trans     &trans     &mkp MCLK
 &kp LC(D)  &kp M             &kp G             &kp C          &kp X          &kp ENTER                &trans  &trans  &trans     &mkp LCLK  &mkp RCLK  &mo 5
 &kp LC(S)  &none             &kp LC(T)         &kp B          &kp SPACE      &kp LC(LS(N))            &trans  &trans                                   &trans
@@ -216,34 +197,38 @@
         };
 
         /* ======================================================================
-         * Layer 7: LH_ROTATE (キャンバス回転モード - Layer 6 の上に重ねる)
+         * Layer 7: LH_ROTATE (CLIP STUDIO 左手デバイス / キャンバス回転モード)
          * - エンコーダー右回転: 右回転 JP_CARET (^)
          * - エンコーダー左回転: 左回転 JP_MINUS (-)
          * - エンコーダー押し込み(15): 表示位置・回転リセット LC(JP_AT) (Ctrl+@)
+         * - 切替キー: 位置2=&to 8 (ブラシ), 位置3=&to 7 (回転), 位置4=&to 6 (ズーム)
+         * - 解除: 右手 P位置 (キー9番) の &to 0
          * ====================================================================== */
         LH_ROTATE {
             bindings = <
-&trans  &trans  &trans  &trans  &trans                                              &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &kp LC(JP_AT)               &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans                          &trans
+&kp LC(Z)  &kp LC(Y)         &to 8             &to 7          &to 6                                                       &trans  &trans  &trans     &trans     &to 0
+&kp LCTRL  &mt LSHFT JP_HENK &kp LALT          &kp P          &kp E          &kp LC(JP_AT)            &trans  &trans  &trans     &trans     &trans     &mkp MCLK
+&kp LC(D)  &kp M             &kp G             &kp C          &kp X          &kp ENTER                &trans  &trans  &trans     &mkp LCLK  &mkp RCLK  &mo 5
+&kp LC(S)  &none             &kp LC(T)         &kp B          &kp SPACE      &kp LC(LS(N))            &trans  &trans                                   &trans
             >;
 
             sensor-bindings = <&inc_dec_kp JP_CARET JP_MINUS>;
         };
 
         /* ======================================================================
-         * Layer 8: LH_BRUSH (ブラシサイズモード - Layer 6 の上に重ねる)
+         * Layer 8: LH_BRUSH (CLIP STUDIO 左手デバイス / ブラシサイズモード)
          * - エンコーダー右回転: ブラシ拡大 JP_RIGHT_BRACKET (])
          * - エンコーダー左回転: ブラシ縮小 JP_LEFT_BRACKET ([)
          * - エンコーダー押し込み(15): 無効 (&none)
+         * - 切替キー: 位置2=&to 8 (ブラシ), 位置3=&to 7 (回転), 位置4=&to 6 (ズーム)
+         * - 解除: 右手 P位置 (キー9番) の &to 0
          * ====================================================================== */
         LH_BRUSH {
             bindings = <
-&trans  &trans  &trans  &trans  &trans                                              &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &none                       &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans                          &trans
+&kp LC(Z)  &kp LC(Y)         &to 8             &to 7          &to 6                                                       &trans  &trans  &trans     &trans     &to 0
+&kp LCTRL  &mt LSHFT JP_HENK &kp LALT          &kp P          &kp E          &none                    &trans  &trans  &trans     &trans     &trans     &mkp MCLK
+&kp LC(D)  &kp M             &kp G             &kp C          &kp X          &kp ENTER                &trans  &trans  &trans     &mkp LCLK  &mkp RCLK  &mo 5
+&kp LC(S)  &none             &kp LC(T)         &kp B          &kp SPACE      &kp LC(LS(N))            &trans  &trans                                   &trans
             >;
 
             sensor-bindings = <&inc_dec_kp JP_RIGHT_BRACKET JP_LEFT_BRACKET>;
