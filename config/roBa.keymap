@@ -3,6 +3,7 @@
 #include <dt-bindings/zmk/keys.h>
 #define ZMK_POINTING_DEFAULT_SCRL_VAL 80
 #include <dt-bindings/zmk/pointing.h>
+#include "keys_ja.h"
 
 &mt {
     flavor = "balanced";
@@ -35,29 +36,44 @@
 / {
     combos {
         compatible = "zmk,combos";
+        /* 既存コンボは LEFT_HAND（Layer 6, 7, 8）では無効にする（修飾キー同時押しでの暴発防止） */
         tab {
             bindings = <&kp TAB>;
             key-positions = <11 12>;
+            layers = <0 1 2 3 4 5>;
         };
 
         shift_tab {
             bindings = <&kp LS(TAB)>;
             key-positions = <12 13>;
+            layers = <0 1 2 3 4 5>;
         };
 
         muhennkann {
             bindings = <&to_layer_0 INT_MUHENKAN>;
             key-positions = <11 10>;
+            layers = <0 1 2 3 4 5>;
         };
 
         double_quotation {
             bindings = <&kp DOUBLE_QUOTES>;
             key-positions = <20 21>;
+            layers = <0 1 2 3 4 5>;
         };
 
         eq {
             bindings = <&kp EQUAL>;
             key-positions = <24 25>;
+            layers = <0 1 2 3 4 5>;
+        };
+
+        /* Space（38）+ 無変換（27）同時押しで LEFT_HAND（Layer 6）に入る
+         * ※手のひら操作中の誤爆を防ぐため、解除は右手端（9番キー: P位置）で行います */
+        left_hand_enter {
+            bindings = <&tog 6>;
+            key-positions = <27 38>;
+            layers = <0 1 2 3 4 5>;
+            require-prior-idle-ms = <150>;
         };
     };
 
@@ -67,6 +83,28 @@
             #binding-cells = <1>;
             bindings = <&to 0 &macro_param_1to1 &kp MACRO_PLACEHOLDER>;
             label = "TO_LAYER_0";
+        };
+
+        /* エンコーダーモード切替マクロ（Layer 6 を維持したまま 7/8 を重ねる） */
+        to_lh_zoom: to_lh_zoom {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&tog_off 7 &tog_off 8>;
+            label = "TO_LH_ZOOM";
+        };
+
+        to_lh_rotate: to_lh_rotate {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&tog_off 8 &tog_on 7>;
+            label = "TO_LH_ROTATE";
+        };
+
+        to_lh_brush: to_lh_brush {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&tog_off 7 &tog_on 8>;
+            label = "TO_LH_BRUSH";
         };
     };
 
@@ -159,13 +197,56 @@
             >;
         };
 
-        layer_6 {
+        /* ======================================================================
+         * Layer 6: LEFT_HAND (CLIP STUDIO 左手デバイス / ズームモード)
+         * - エンコーダー右回転: ズームイン LC(JP_PLUS)
+         * - エンコーダー左回転: ズームアウト LC(JP_MINUS)
+         * - エンコーダー押し込み(15): 全体表示リセット LC(NUMBER_0)
+         * - 解除: 右手 P位置 (キー9番) の &to 0
+         * ====================================================================== */
+        LEFT_HAND {
             bindings = <
-&trans  &trans        &trans        &trans        &trans                           &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
-&trans  &trans        &trans        &trans        &trans  &trans      &trans       &trans        &trans        &trans        &trans        &trans
-&trans  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &trans  &trans      &bootloader  &trans        &trans        &trans        &trans        &bt BT_CLR
-&trans  &trans        &trans        &trans        &trans  &trans      &trans       &trans                                                  &bt BT_CLR_ALL
+&kp LC(Z)  &kp LC(Y)         &to_lh_brush      &to_lh_rotate  &to_lh_zoom                                                 &trans  &trans  &trans     &trans     &to 0
+&kp LCTRL  &mt LSHFT JP_HENK &kp LALT          &kp P          &kp E          &kp LC(NUMBER_0)         &trans  &trans  &trans     &trans     &trans     &mkp MCLK
+&kp LC(D)  &kp M             &kp G             &kp C          &kp X          &kp ENTER                &trans  &trans  &trans     &mkp LCLK  &mkp RCLK  &mo 5
+&kp LC(S)  &none             &kp LC(T)         &kp B          &kp SPACE      &kp LC(LS(N))            &trans  &trans                                   &trans
             >;
+
+            sensor-bindings = <&inc_dec_kp LC(JP_PLUS) LC(JP_MINUS)>;
+        };
+
+        /* ======================================================================
+         * Layer 7: LH_ROTATE (キャンバス回転モード - Layer 6 の上に重ねる)
+         * - エンコーダー右回転: 右回転 JP_CARET (^)
+         * - エンコーダー左回転: 左回転 JP_MINUS (-)
+         * - エンコーダー押し込み(15): 表示位置・回転リセット LC(JP_AT) (Ctrl+@)
+         * ====================================================================== */
+        LH_ROTATE {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans                                              &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &kp LC(JP_AT)               &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans                          &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp JP_CARET JP_MINUS>;
+        };
+
+        /* ======================================================================
+         * Layer 8: LH_BRUSH (ブラシサイズモード - Layer 6 の上に重ねる)
+         * - エンコーダー右回転: ブラシ拡大 JP_RIGHT_BRACKET (])
+         * - エンコーダー左回転: ブラシ縮小 JP_LEFT_BRACKET ([)
+         * - エンコーダー押し込み(15): 無効 (&none)
+         * ====================================================================== */
+        LH_BRUSH {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans                                              &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &none                       &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                      &trans  &trans                          &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp JP_RIGHT_BRACKET JP_LEFT_BRACKET>;
         };
     };
 };
